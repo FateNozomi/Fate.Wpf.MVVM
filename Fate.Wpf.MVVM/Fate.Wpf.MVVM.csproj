@@ -48,6 +48,7 @@
     <Compile Include="AsyncCommand{TResult}.cs" />
     <Compile Include="IAsyncCommand.cs" />
     <Compile Include="IMessageBoxService.cs" />
+    <Compile Include="IWindow.cs" />
     <Compile Include="IWindowService.cs" />
     <Compile Include="MessageBoxService.cs" />
     <Compile Include="NotifyTaskCompletion{TResult}.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="PropertyChangedBase.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="RelayCommand{TResult}.cs" />
+    <Compile Include="ViewModelBase.cs" />
     <Compile Include="WindowService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

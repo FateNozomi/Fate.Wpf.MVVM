@@ -1,16 +1,21 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Fate.Wpf.MVVM
 {
     public interface IWindowService
     {
-        void Show<T>(object dataContext)
+        void Show<T>(IWindow dataContext)
             where T : Window, new();
 
-        bool? ShowDialog<T>(object dataContext)
+        bool? ShowDialog<T>(IWindow dataContext)
             where T : Window, new();
 
-        T CreateWindow<T>(object dataContext)
+        Task<bool?> ShowWindow<T>(IWindow dataContext, CancellationToken token)
+            where T : Window, new();
+
+        Task<bool?> ShowWindow<T>(IWindow dataContext, IWindow parentContext, CancellationToken token)
             where T : Window, new();
     }
 }
