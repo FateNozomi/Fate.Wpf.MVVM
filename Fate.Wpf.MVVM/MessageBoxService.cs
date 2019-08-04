@@ -25,14 +25,14 @@ namespace Fate.Wpf.MVVM
 
         public bool? Dispatch(string text, string caption = "", MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.None)
         {
-            if (Application.Current.Dispatcher.CheckAccess())
+            if (ApplicationDispatcherLocator.Instance.Dispatcher.CheckAccess())
             {
                 return Show(text, caption, button, image);
             }
             else
             {
                 bool? result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                ApplicationDispatcherLocator.Instance.Dispatcher.Invoke(() =>
                     result = Show(text, caption, button, image));
                 return result;
             }
