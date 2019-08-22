@@ -9,14 +9,18 @@ namespace Fate.Wpf.MVVM
 {
     public interface IWindow
     {
-        bool? WindowResult { get; set; }
-
-        Action Close { get; set; }
-
-        Action<bool> Enable { get; set; }
+        bool? WindowResult { get; }
 
         Task OnLoadedAsync();
 
         Task<bool> CanCloseAsync();
+
+        void Close(bool? windowResult = null);
+
+        void IsEnabled(bool enable);
+
+        void RegisterViewClose(Action close);
+
+        void RegisterViewIsEnabled(Action<bool> isEnabled);
     }
 }

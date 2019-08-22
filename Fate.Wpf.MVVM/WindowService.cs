@@ -43,7 +43,7 @@ namespace Fate.Wpf.MVVM
 
             try
             {
-                parentContext?.Enable(false);
+                parentContext?.IsEnabled(false);
                 window.Show();
                 await semaphore.WaitAsync(token);
                 semaphore.Dispose();
@@ -51,7 +51,7 @@ namespace Fate.Wpf.MVVM
             }
             finally
             {
-                parentContext?.Enable(true);
+                parentContext?.IsEnabled(true);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Fate.Wpf.MVVM
         {
             private IWindow _viewModel;
             private Window _view;
-            private bool actuallyClosing;
+            private bool _actuallyClosing;
 
             public WindowConductor(IWindow viewModel, Window view)
             {
@@ -73,8 +73,8 @@ namespace Fate.Wpf.MVVM
                 _view.Loaded += View_Loaded;
                 _view.Closing += View_Closing;
 
-                _viewModel.Close = () => _view.Close();
-                _viewModel.Enable = enable => _view.IsEnabled = enable;
+                _viewModel.RegisterViewClose(() => _view.Close());
+                _viewModel.RegisterViewIsEnabled(enable => _view.IsEnabled = enable);
             }
 
             private async void View_Loaded(object sender, RoutedEventArgs e)
@@ -84,9 +84,9 @@ namespace Fate.Wpf.MVVM
 
             private async void View_Closing(object sender, System.ComponentModel.CancelEventArgs e)
             {
-                if (actuallyClosing)
+                if (_actuallyClosing)
                 {
-                    actuallyClosing = false;
+                    _actuallyClosing = false;
                     return;
                 }
 
@@ -95,7 +95,7 @@ namespace Fate.Wpf.MVVM
                 bool canClose = await _viewModel.CanCloseAsync();
                 if (canClose)
                 {
-                    actuallyClosing = true;
+                    _actuallyClosing = true;
                     _view.Close();
                 }
             }
