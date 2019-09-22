@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Fate.Wpf.MVVM
 {
     public class MessageBoxService : IMessageBoxService
     {
+        public Dispatcher Dispatcher { get; set; } = Dispatcher.CurrentDispatcher;
+
         public bool? Show(string text, string caption = "", MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.None)
         {
             MessageBoxResult result = MessageBox.Show(text, caption, button, image);
@@ -25,15 +28,14 @@ namespace Fate.Wpf.MVVM
 
         public bool? Dispatch(string text, string caption = "", MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.None)
         {
-            if (ApplicationDispatcherLocator.Instance.Dispatcher.CheckAccess())
+            if (Dispatcher.CheckAccess())
             {
                 return Show(text, caption, button, image);
             }
             else
             {
                 bool? result = false;
-                ApplicationDispatcherLocator.Instance.Dispatcher.Invoke(() =>
-                    result = Show(text, caption, button, image));
+                Dispatcher.Invoke(() => result = Show(text, caption, button, image));
                 return result;
             }
         }
