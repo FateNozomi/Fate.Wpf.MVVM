@@ -23,7 +23,10 @@ namespace Fate.Wpf.MVVM
         public void Close(bool? windowResult = null)
         {
             WindowResult = windowResult;
-            _close();
+            if (_close != null)
+            {
+                _close();
+            }
         }
 
         public void IsEnabled(bool enable)
